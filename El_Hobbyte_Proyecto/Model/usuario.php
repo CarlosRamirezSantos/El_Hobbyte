@@ -18,6 +18,17 @@ class Usuario {
         $this->fecha_creacion = $fecha_creacion;
     }
 
+    public function toArray() {
+        return [
+            'id' => $this->id,
+            'nombre_usuario' => $this->nombre_usuario,
+            'email' => $this->email,
+            'rol' => $this->rol,
+            'fecha_creacion' => $this->fecha_creacion
+        
+        ];
+    }
+    
 public function getId() { return $this->id; }
 public function getNombreUsuario() { return $this->nombre_usuario; }
 public function getEmail() { return $this->email; }

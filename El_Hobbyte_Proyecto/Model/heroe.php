@@ -17,7 +17,15 @@ class Heroe {
         $this->estado = $estado;
     }
 
-    
+     public function toArray() {
+        return [
+            'id' => $this->id,
+            'nombre' => $this->nombre,
+            'capacidad_maxima' => $this->capacidad_maxima,
+            'capacidad_actual' => $this->capacidad_actual,
+            'estado' => $this->estado
+        ];
+     }
     public function getId() { return $this->id; }
     public function getIdPartida() { return $this->id_partida; }
     public function getNombre() { return $this->nombre; }
