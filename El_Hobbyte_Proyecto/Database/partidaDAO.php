@@ -1,6 +1,6 @@
 <?php
-require_once 'database.php';
-require_once '../Model/partida.php';
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/../Model/partida.php';
 
 class PartidaDAO {
 

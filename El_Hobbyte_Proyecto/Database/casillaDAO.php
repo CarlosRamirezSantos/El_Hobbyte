@@ -1,6 +1,6 @@
 <?php
-require_once 'database.php';
-require_once '../Model/casilla.php';
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/../Model/casilla.php';
 
 class CasillaDAO {
 

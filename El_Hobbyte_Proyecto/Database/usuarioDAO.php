@@ -17,7 +17,7 @@ class UsuarioDAO {
 
             $nombre_usuario = $usuario->getNombreUsuario();
             $email = $usuario->getEmail();
-            $clave = $usuario->getClave(); 
+            $clave = $usuario->getClave(); // Debe estar hasheada antes de llegar aquí
             $rol = $usuario->getRol();
             $fecha_creacion = $usuario->getFechaCreacion();
 
@@ -81,7 +81,7 @@ class UsuarioDAO {
     public static function getUsuarioPorNombre(string $nombre) {
         $conexion = Database::connect();
         $stmt = $conexion->prepare("SELECT id, nombre_usuario, email, clave, rol, fecha_creacion FROM usuario WHERE nombre_usuario = ?");
-        $stmt->bind_param("s", $nombre);
+        $stmt->bind_param("s", $nombre); 
         $stmt->execute();
         $resultado = $stmt->get_result();
 
