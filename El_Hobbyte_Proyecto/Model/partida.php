@@ -1,4 +1,5 @@
 <?php
+
 class Partida {
     private $id;
     private $id_usuario;
@@ -10,7 +11,7 @@ class Partida {
     private $fecha_inicio;
     private $fecha_fin;
 
-    public function __construct($id=null, $id_usuario=null, $tipo='estandar', $casillas_totales=20, $casillas_destapadas=0, $casillas_perdidas_seguidas=0, $estado='en_curso', $fecha_inicio=null, $fecha_fin=null) {
+    public function __construct($id = null, $id_usuario = null, $tipo = 'estandar', $casillas_totales = 20, $casillas_destapadas = 0, $casillas_perdidas_seguidas = 0, $estado = 'en_curso', $fecha_inicio = null, $fecha_fin = null) {
         $this->id = $id;
         $this->id_usuario = $id_usuario;
         $this->tipo = $tipo;
@@ -39,6 +40,87 @@ class Partida {
         );
     }
 
+    public function registrarExito() {
+        $this->casillas_destapadas++;
+        $this->casillas_perdidas_seguidas = 0;
+    }
+
+    public function registrarFracaso() {
+        $this->casillas_destapadas++;
+        $this->casillas_perdidas_seguidas++;
+    }
+
+    public function resolverPrueba(Casilla $casilla, array $heroes): bool {
+        $tipo = $casilla->getTipoPrueba();
+        $esfuerzo = $casilla->getEsfuerzoNecesario();
+
+        $mapeoHeroeTipo = [
+            'Gandalf' => 'magia',
+            'Thorin'  => 'fuerza',
+            'Bilbo'   => 'habilidad'
+        ];
+
+        $heroe = null;
+        foreach ($heroes as $h) {
+            $nombre = $h->getNombre();
+            if (isset($mapeoHeroeTipo[$nombre]) && $mapeoHeroeTipo[$nombre] === $tipo) {
+                $heroe = $h;
+                break;
+            }
+        }
+
+        if (!$heroe || $heroe->getEstado() !== 'activo' || $heroe->getCapacidadActual() <= 0) {
+            return false;
+        }
+
+        $capacidad = $heroe->getCapacidadActual();
+        $probabilidadExito = 50;
+        if ($capacidad > $esfuerzo) {
+            $probabilidadExito = 90;
+        } elseif ($capacidad == $esfuerzo) {
+            $probabilidadExito = 70;
+        }
+
+        $exito = (random_int(1, 100) <= $probabilidadExito);
+
+        if ($exito) {
+            $heroe->setCapacidadActual(max(0, $capacidad - $esfuerzo));
+        } else {
+            $heroe->setCapacidadActual(0);
+            $heroe->setEstado('inactivo');
+        }
+
+        return $exito;
+    }
+
+    public function verificarEstadoFinal(array $heroes): string {
+        if ($this->estado !== 'en_curso') {
+            return $this->estado;
+        }
+
+        if ($this->casillas_perdidas_seguidas >= 5) {
+            return 'perdida';
+        }
+
+        $alMenosUnActivo = false;
+        foreach ($heroes as $h) {
+            if ($h->getEstado() === 'activo' && $h->getCapacidadActual() > 0) {
+                $alMenosUnActivo = true;
+                break;
+            }
+        }
+
+        if (!$alMenosUnActivo) {
+            return 'perdida';
+        }
+
+        if ($this->casillas_destapadas >= ceil($this->casillas_totales / 2)) {
+            return 'ganada';
+        }
+
+        return 'en_curso';
+    }
+
     public function toArray() {
         return [
             'id' => $this->id,
@@ -53,8 +135,7 @@ class Partida {
         ];
     }
 
-
-  public function getId() { return $this->id; }
+    public function getId() { return $this->id; }
     public function getIdUsuario() { return $this->id_usuario; }
     public function getTipo() { return $this->tipo; }
     public function getCasillasTotales() { return $this->casillas_totales; }
