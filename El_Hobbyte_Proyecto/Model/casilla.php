@@ -21,6 +21,16 @@ class Casilla {
         $this->resultado_prueba = $resultado_prueba;
     }
 
+     public function toArray() {
+        return [
+            'id' => $this->id,
+            'posicion' => $this->posicion,
+            'tipo_prueba' => $this->tipo_prueba,
+            'esfuerzo_necesario' => $this->esfuerzo_necesario,
+            'destapada' => (bool)$this->destapada,
+            'resultado_prueba' => $this->resultado_prueba
+        ];
+    }
     public function getId() { return $this->id; }
     public function getIdPartida() { return $this->id_partida; }
     public function getPosicion() { return $this->posicion; }
