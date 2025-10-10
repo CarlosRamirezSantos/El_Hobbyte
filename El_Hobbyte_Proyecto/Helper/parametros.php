@@ -2,7 +2,7 @@
 
 class Parametros {
     static $host='localhost';
-    static $usuario='carlos';
+    static $usuario='Carlos';
     static $clave='grizzimejorquemodric';
     static $bd='el_hobbyte';
 }
