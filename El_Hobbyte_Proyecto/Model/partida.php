@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../Model/casilla.php';
 
 class Partida {
     private $id;
