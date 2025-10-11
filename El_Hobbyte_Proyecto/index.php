@@ -7,7 +7,7 @@ require_once __DIR__ . '/Model/heroe.php';
 require_once __DIR__ . '/Controller/controllerUsuario.php';
 require_once __DIR__ . '/Controller/controllerPartida.php';
 require_once __DIR__ . '/Database/usuarioDAO.php';
-require_once __DIR__ . '/Database/partidaDAO';
+require_once __DIR__ . '/Database/partidaDAO.php';
 require_once __DIR__ . '/Database/casillaDAO.php';
 require_once __DIR__ . '/Database/heroeDAO.php';
 
@@ -21,19 +21,8 @@ unset($parametros[0]);
 switch ($parametros[1] ?? '') {
 
     case 'admin':
-        $credenciales = UsuarioController::obtenerCredenciales();
-        if (!$credenciales['nombre_usuario'] || !$credenciales['clave']) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Faltan auth_nombre o auth_clave']);
-            exit;
-        }
+        $usuario = UsuarioController::autenticarYVerificarRol('administrador');
         $controlador = new UsuarioController();
-        $usuario = $controlador->verificarUsuarioLogin($credenciales['nombre_usuario'], $credenciales['clave']);
-        if (!$usuario || $usuario->getRol() !== 'administrador') {
-            http_response_code(403);
-            echo json_encode(['error' => 'Acceso denegado. Solo administradores pueden acceder']);
-            exit;
-        }
 
         if (($parametros[2] ?? '') === 'usuarios') {
             switch ($metodo) {
@@ -73,22 +62,8 @@ switch ($parametros[1] ?? '') {
         }
         break;
 
-   
     case 'gamer': 
-        $credenciales = UsuarioController::obtenerCredenciales();
-        if (!$credenciales['nombre_usuario'] || !$credenciales['clave']) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Faltan auth_nombre o auth_clave']);
-            exit;
-        }
-        $controlador = new UsuarioController();
-        $usuario = $controlador->verificarUsuarioLogin($credenciales['nombre_usuario'], $credenciales['clave']);
-        if (!$usuario || $usuario->getRol() !== 'jugador') {
-            http_response_code(403);
-            echo json_encode(['error' => 'Acceso denegado. Solo jugadores pueden acceder']);
-            exit;
-        }
-
+        $usuario = UsuarioController::autenticarYVerificarRol('jugador');
         $controladorPartida = new PartidaController($usuario);
 
         if (($parametros[2] ?? '') === 'partidas') {
@@ -121,23 +96,11 @@ switch ($parametros[1] ?? '') {
         break;
 
     case 'user':
-        $credenciales = UsuarioController::obtenerCredenciales();
-        if (!$credenciales['nombre_usuario'] || !$credenciales['clave']) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Faltan auth_nombre o auth_clave']);
-            exit;
-        }
+        $usuario = UsuarioController::autenticarYVerificarRol(); 
         $controlador = new UsuarioController();
-        $usuario = $controlador->verificarUsuarioLogin($credenciales['nombre_usuario'], $credenciales['clave']);
-        if (!$usuario) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Credenciales inválidas']);
-            exit;
-        }
 
         switch ($metodo) {
             case 'GET':
-                
                 echo json_encode($usuario->toArray());
                 break;
 
