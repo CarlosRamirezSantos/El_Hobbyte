@@ -70,6 +70,16 @@ class HeroeDAO {
         return $heroe;
     }
 
+    public static function borrarHeroesPartida($id_partida) {
+    $conexion = Database::connect();
+    $stmt = $conexion->prepare("DELETE FROM heroe WHERE id_partida = ?");
+    $stmt->bind_param("i", $id_partida);
+    $ok = $stmt->execute();
+    $stmt->close();
+    $conexion->close();
+    return $ok;
+}
+
     public static function actualizar(Heroe $heroe) {
     $conexion = Database::connect();
     $stmt = $conexion->prepare("UPDATE heroe SET capacidad_actual=?, estado=? WHERE id=?");
