@@ -1,6 +1,6 @@
 <?php
 
-include_once('./Helper/parametros.php');
+require_once __DIR__ . '/../Helper/parametros.php';
 
 
 class Database {
