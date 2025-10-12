@@ -10,6 +10,7 @@ require_once __DIR__ . '/Database/usuarioDAO.php';
 require_once __DIR__ . '/Database/partidaDAO.php';
 require_once __DIR__ . '/Database/casillaDAO.php';
 require_once __DIR__ . '/Database/heroeDAO.php';
+require_once __DIR__ . '/config/mail.php';
 
 header('Content-Type: application/json');
 
@@ -104,9 +105,8 @@ switch ($parametros[1] ?? '') {
                 echo json_encode($usuario->toArray());
                 break;
 
-            case 'PATCH':
-                $datos = json_decode(file_get_contents("php://input"), true) ?: [];
-                $controlador->actualizarContrasena($usuario->getId(), $datos);
+            case 'POST':
+                $controlador->recuperarContrasena();
                 break;
 
             default:

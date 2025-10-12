@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../Model/usuario.php';
 require_once __DIR__ . '/../Database/usuarioDAO.php';
+require_once __DIR__ . '/../config/mail.php';
 
 class UsuarioController {
     private $usuarioAutenticado;
@@ -141,46 +142,46 @@ class UsuarioController {
         }
     }
 
-    
-    public function actualizarContrasena($idUsuario, $datos) {
-        $contrasenaActual = $datos['contrasena_actual'] ?? '';
-        $nuevaContrasena = $datos['nueva_contrasena'] ?? '';
+    public function recuperarContrasena() {
+    try {
+        $datos = json_decode(file_get_contents('php://input'), true);
 
-        if (empty($contrasenaActual) || empty($nuevaContrasena)) {
+        if (!isset($datos['email']) || trim($datos['email']) === '') {
             http_response_code(400);
-            echo json_encode(['error' => 'Se requieren "contrasena_actual" y "nueva_contrasena"']);
+            echo json_encode(['error' => 'El campo email es obligatorio']);
             return;
         }
 
-        if (strlen($nuevaContrasena) < 6) {
-            http_response_code(400);
-            echo json_encode(['error' => 'La nueva contraseña debe tener al menos 6 caracteres']);
-            return;
+        $email = trim($datos['email']);
+
+        $usuario = UsuarioDAO::getUsuarioPorEmail($email);
+        if ($usuario !== null) {
+            
+            $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $contrasenaNueva = '';
+            for ($i = 0; $i < 8; $i++) {
+                $contrasenaNueva .= $caracteres[rand(0, strlen($caracteres) - 1)];
+            }
+
+            $usuario->setClave($contrasenaNueva);
+            UsuarioDAO::modificarUsuario($usuario);
+
+            
+            $enviado = enviarCorreoRecuperacion($email, $contrasenaNueva);
+            if (!$enviado) {
+                error_log("Falló el envío del correo a: $email");
+            }
         }
 
-        
-        $usuario = UsuarioDAO::getUsuarioPorId((int)$idUsuario);
-        if (!$usuario) {
-            http_response_code(404);
-            echo json_encode(['error' => 'Usuario no encontrado']);
-            return;
-        }
+        http_response_code(200);
+        echo json_encode([
+            'mensaje' => 'Si el email está registrado, recibirás una nueva contraseña en el mismo'
+        ]);
 
-    
-        if ($contrasenaActual !== $usuario->getClave()) {
-            http_response_code(401);
-            echo json_encode(['error' => 'La contraseña actual es incorrecta']);
-            return;
-        }
-
-        
-        $usuario->setClave($nuevaContrasena);
-        if (UsuarioDAO::modificarUsuario($usuario)) {
-            http_response_code(200);
-            echo json_encode(['mensaje' => 'Contraseña actualizada correctamente']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'No se pudo actualizar la contraseña']);
-        }
+    } catch (Exception $e) {
+        error_log("Excepción en recuperarContrasena: " . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['error' => 'Error al intentar recuperar la contraseña']);
     }
+}
 }
