@@ -34,7 +34,7 @@ class UsuarioDAO {
             }
         }
     }
-
+    
     public static function getAllUsuarios() {
         $conexion = Database::connect();
         $usuarios = [];
@@ -126,4 +126,26 @@ class UsuarioDAO {
         $conexion->close();
         return $ok;
     }
+    public static function getUsuarioPorEmail(string $email) {
+    $conexion = Database::connect();
+    $stmt = $conexion->prepare("SELECT id, nombre_usuario, email, clave, rol, fecha_creacion FROM usuario WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $usuario = null;
+    if ($fila = $resultado->fetch_assoc()) {
+        $usuario = new Usuario(
+            $fila["id"],
+            $fila["nombre_usuario"],
+            $fila["email"],
+            $fila["clave"],
+            $fila["rol"],
+            $fila["fecha_creacion"]
+        );
+    }
+    $stmt->close();
+    $conexion->close();
+    return $usuario;
+}
 }
