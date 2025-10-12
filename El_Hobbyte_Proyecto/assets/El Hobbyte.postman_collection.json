@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "332cce4f-35a1-41e8-b80e-35b596334630",
+		"name": "El Hobbyte",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48599491"
+	},
+	"item": [
+		{
+			"name": "Admin- GetAllUsuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Carlos\",\r\n  \"auth_clave\": \"12345\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8057/admin/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"admin",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin- GetUsuarioById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Carlos\",\r\n  \"auth_clave\": \"12345\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/admin/usuarios/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"admin",
+						"usuarios",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin- CrearUsuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Carlos\",\r\n  \"auth_clave\": \"12345\",\r\n  \"nombre_usuario\": \"Raquel\",\r\n  \"email\": \"rdiaz@correo.com\",\r\n  \"clave\": \"1111\",\r\n  \"rol\": \"jugador\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8057/admin/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"admin",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin- ActualizarUsuario",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Carlos\",\r\n  \"auth_clave\": \"12345\",\r\n  \"nombre_usuario\": \"Raquel\",\r\n  \"email\": \"raqueld@correo.com\",\r\n  \"clave\": \"1111\",\r\n  \"rol\": \"jugador\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8057/admin/usuarios/14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"admin",
+						"usuarios",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin- DeleteUsuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Carlos\",\r\n  \"auth_clave\": \"12345\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/admin/usuarios/14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"admin",
+						"usuarios",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gamer- CrearPartida",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Julio\",\r\n  \"auth_clave\": \"1111\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/gamer/partidas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"gamer",
+						"partidas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gamer- GetAllPartidas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Julio\",\r\n  \"auth_clave\": \"1111\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/gamer/partidas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"gamer",
+						"partidas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gamer- GetPartidaById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Julio\",\r\n  \"auth_clave\": \"1111\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8057/gamer/partidas/31",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"gamer",
+						"partidas",
+						"31"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gamer- DestaparCasilla",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Julio\",\r\n  \"auth_clave\": \"1111\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/gamer/partidas/31/casilla/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"gamer",
+						"partidas",
+						"31",
+						"casilla",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User- VerMisDatos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Julio\",\r\n  \"auth_clave\": \"1111\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User- CambiarContraseña",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Laura\",\r\n  \"auth_clave\": \"F6sPfGAE\",\r\n    \"email\":\"carlosramii2304@gmail.com\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8057/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gamer- Rendirse",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auth_nombre\": \"Julio\",\r\n  \"auth_clave\": \"222222\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8057/gamer/partidas/33/rendirse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8057",
+					"path": [
+						"gamer",
+						"partidas",
+						"33",
+						"rendirse"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
