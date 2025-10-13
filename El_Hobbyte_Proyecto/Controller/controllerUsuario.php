@@ -54,30 +54,36 @@ class UsuarioController {
     return $usuario;
 }
 
-    public function crearUsuario($datos) {
-        if (empty($datos['nombre_usuario']) || empty($datos['clave']) || empty($datos['email'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Faltan campos obligatorios: nombre_usuario, clave, email']);
-            return;
-        }
+    public function crearUsuario($datos = null) {
 
-        $usuario = new Usuario(
-            null,
-            $datos['nombre_usuario'],
-            $datos['email'],
-            $datos['clave'], 
-            $datos['rol'] ?? 'jugador',
-            date('Y-m-d H:i:s')
-        );
-
-        if (UsuarioDAO::crear($usuario)) {
-            http_response_code(201);
-            echo json_encode(['mensaje' => 'Usuario creado exitosamente']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'No se pudo crear el usuario']);
-        }
+    if ($datos === null || empty($datos)) {
+        $datos = json_decode(file_get_contents("php://input"), true) ?: [];
     }
+
+    if (empty($datos['nombre_usuario']) || empty($datos['clave']) || empty($datos['email'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Faltan campos obligatorios: nombre_usuario, clave, email']);
+        return;
+    }
+
+    $usuario = new Usuario(
+        null,
+        $datos['nombre_usuario'],
+        $datos['email'],
+        $datos['clave'], 
+        $datos['rol'] ?? 'jugador',
+        date('Y-m-d H:i:s')
+    );
+
+    if (UsuarioDAO::crear($usuario)) {
+        http_response_code(201);
+        echo json_encode(['mensaje' => 'Usuario creado exitosamente']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'No se pudo crear el usuario']);
+    }
+}
+
 
     public function getUsuarioPorId($id) {
         $usuario = UsuarioDAO::getUsuarioPorId((int)$id);
@@ -112,26 +118,32 @@ class UsuarioController {
         echo json_encode($lista);
     }
 
-    public function actualizarUsuario($id, $datos) {
-        $usuario = UsuarioDAO::getUsuarioPorId((int)$id);
-        if (!$usuario) {
-            http_response_code(404);
-            echo json_encode(['error' => 'Usuario no encontrado']);
-            return;
-        }
 
-        if (isset($datos['nombre_usuario'])) $usuario->setNombreUsuario($datos['nombre_usuario']);
-        if (isset($datos['email'])) $usuario->setEmail($datos['email']);
-        if (isset($datos['clave'])) $usuario->setClave($datos['clave']);
-        if (isset($datos['rol'])) $usuario->setRol($datos['rol']);
-        
-        if (UsuarioDAO::modificarUsuario($usuario)) {
-            echo json_encode(['mensaje' => 'Usuario actualizado']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'No se pudo actualizar el usuario']);
-        }
+    public function actualizarUsuario($id, $datos = null) {
+    
+    if ($datos === null || empty($datos)) {
+        $datos = json_decode(file_get_contents("php://input"), true) ?: [];
     }
+
+    $usuario = UsuarioDAO::getUsuarioPorId((int)$id);
+    if (!$usuario) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Usuario no encontrado']);
+        return;
+    }
+
+    if (isset($datos['nombre_usuario'])) $usuario->setNombreUsuario($datos['nombre_usuario']);
+    if (isset($datos['email'])) $usuario->setEmail($datos['email']);
+    if (isset($datos['clave'])) $usuario->setClave($datos['clave']);
+    if (isset($datos['rol'])) $usuario->setRol($datos['rol']);
+    
+    if (UsuarioDAO::modificarUsuario($usuario)) {
+        echo json_encode(['mensaje' => 'Usuario actualizado']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'No se pudo actualizar el usuario']);
+    }
+}
 
     public function borrarUsuario($id) {
         if (UsuarioDAO::borrarUsuario((int)$id)) {
