@@ -35,16 +35,11 @@ switch ($parametros[1] ?? '') {
                     }
                     break;
                 case 'POST':
-                    $datosUsuario = $_POST;
-                    if (empty($datosUsuario)) {
-                        $datosUsuario = json_decode(file_get_contents("php://input"), true) ?: [];
-                    }
-                    $controlador->crearUsuario($datosUsuario);
+                    $controlador->crearUsuario();
                     break;
                 case 'PUT':
                     if (isset($parametros[3]) && is_numeric($parametros[3])) {
-                        $put_vars = json_decode(file_get_contents("php://input"), true) ?: [];
-                        $controlador->actualizarUsuario($parametros[3], $put_vars);
+                        $controlador->actualizarUsuario($parametros[3]);
                     }
                     break;
                 case 'DELETE':
